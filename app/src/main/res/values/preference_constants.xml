@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="key_order_by" translatable="false">KEY_ORDER_BY</string>
+
+    <string name="order_by">Order by</string>
+    <string name="val_popularity" translatable="false">Popularity</string>
+    <string name="val_ratings">Ratings</string>
+
+    <string-array name="array_order_by">
+        <item>@string/val_popularity</item>
+        <item>@string/val_ratings</item>
+    </string-array>
+
+</resources>
