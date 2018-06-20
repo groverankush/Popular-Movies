@@ -3,7 +3,9 @@ package com.ankushgrover.popularmovies.listing;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +15,18 @@ import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.data.Movie;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ankush Grover(ankush.grover@finoit.co.in) on 19/6/18.
  */
 public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder> {
 
+    private String TAG = ListingAdapter.class.getSimpleName();
     private Context context;
-    private ArrayList<Movie> movies;
+    private List<Movie> movies;
 
-    public ListingAdapter(Context context, ArrayList<Movie> movies) {
+    public ListingAdapter(Context context, List<Movie> movies) {
 
         this.context = context;
         this.movies = movies;
@@ -32,19 +35,29 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_movie, parent));
+        Log.d(TAG, "create");
+
+
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_movie,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        Log.d(TAG, "bind");
+
         Picasso.get()
                 .load(makePosterPath(movies.get(position).getPosterPath()))
+                .placeholder(R.drawable.ic_image_black_24dp)
                 .into(holder.banner);
     }
 
+
     @Override
     public int getItemCount() {
-        return 0;
+
+        Log.d(TAG, "item_count");
+        return movies.size();
     }
 
     private String makePosterPath(String part) {
@@ -58,7 +71,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHold
                 .appendPath("t")
                 .appendPath("p")
                 .appendPath("w185")
-                .appendPath(part);
+                .appendEncodedPath(part);
         return builder.build().toString();
 
 

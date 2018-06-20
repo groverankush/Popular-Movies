@@ -32,12 +32,16 @@ public class Preferences {
     }
 
 
-    static String getString(@StringRes int key, @StringRes int defaultValueId) {
+    private static String getString(@StringRes int key, @StringRes int defaultValueId) {
         return getPreferences().getString(App.getApplication().getString(key), App.getApplication().getString(defaultValueId));
     }
 
-    static String getOrderPreference() {
+    public static String getOrderPreference() {
         return getString(R.string.key_order_by, R.string.val_popularity);
+    }
+
+    public static boolean isPopularMoviesSelected() {
+        return getOrderPreference().equals(App.getApplication().getString(R.string.val_popularity));
     }
 
 }

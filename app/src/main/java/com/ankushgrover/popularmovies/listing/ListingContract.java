@@ -10,6 +10,8 @@ public interface ListingContract {
 
     interface View extends BaseView {
 
+        void moviesAdded();
+
     }
 
     interface Presenter extends BasePresenter {
