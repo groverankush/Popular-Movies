@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="settings">Settings</string>
+    <string name="msg_something_went_wrong">Something went wrong.</string>
+    <string name="network_error">It seems you\'re not connected to network.</string>
+    <string name="genereal_error">Something went wrong. Please try again!</string>
+
+
 </resources>

@@ -8,12 +8,35 @@ import com.ankushgrover.popularmovies.architecture.BaseView;
  */
 public interface ListingContract {
 
-    interface View extends BaseView{
+    interface View extends BaseView {
+
+        void moviesAdded();
+
+        void clearMoviesList();
+
+        boolean fetchMoreMovies();
 
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
 
+        /**
+         * Method to fetch popular movies from the database.
+         */
+        void fetchPopularMovies();
+
+        /**
+         * Method to fetch top movies from the database.
+         */
+        void fetchTopMovies();
+
+        /**
+         * Responsible for fetching movies based on user preference and current requests.
+         *
+         * @return
+         * @param: Forcibly fetch movies. Ignore the previous requests.
+         */
+        boolean fetchMovies(boolean force);
     }
 
 }
