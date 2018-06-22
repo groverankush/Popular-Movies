@@ -3,10 +3,13 @@ package com.ankushgrover.popularmovies.listing;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.architecture.BaseActivity;
@@ -19,6 +22,9 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
     private ListingPresenter presenter;
     private ListingViewModel model;
     private ListingAdapter adapter;
+    private TextView errorTV;
+    private RecyclerView recycler;
+    private SwipeRefreshLayout swipe;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -55,28 +61,35 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
         model = ViewModelProviders.of(this).get(ListingViewModel.class);
         presenter = new ListingPresenter(MoviesRepository.getInstance(), model, this);
 
+        initView();
         initAdapter();
 
 
     }
 
-    private void initAdapter() {
-        RecyclerView recycler = findViewById(R.id.recycler);
-        adapter = new ListingAdapter(this, model.getMovies());
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        recycler.setAdapter(adapter);
-        recycler.setLayoutManager(manager);
-        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+    private void initView() {
+        errorTV = findViewById(R.id.tv_error);
+        recycler = findViewById(R.id.recycler);
+        swipe = findViewById(R.id.swipe);
 
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onRefresh() {
+                presenter.fetchMovies(true);
             }
         });
+
+    }
+
+    private void initAdapter() {
+
+
+        swipe.setRefreshing(true);
+
+        adapter = new ListingAdapter(this, model.getMovies());
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        adapter.setRecyclerView(recycler);
+        recycler.setLayoutManager(manager);
     }
 
 
@@ -105,6 +118,31 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
 
     @Override
     public void moviesAdded() {
+        swipe.setRefreshing(false);
+        errorTV.setVisibility(View.GONE);
+        recycler.setVisibility(View.VISIBLE);
+
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void clearMoviesList() {
+
+
+        swipe.setRefreshing(false);
+
+        if (model.getMovies().size() == 0) {
+            recycler.setVisibility(View.INVISIBLE);
+            errorTV.setVisibility(View.VISIBLE);
+            errorTV.setText(R.string.genereal_error);
+        }
+
+    }
+
+
+    @Override
+    public boolean fetchMoreMovies() {
+        swipe.setRefreshing(true);
+        return presenter.fetchMovies(false);
     }
 }

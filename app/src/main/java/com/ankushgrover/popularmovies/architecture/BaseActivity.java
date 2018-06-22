@@ -11,6 +11,8 @@ import android.widget.Toast;
  */
 abstract public class BaseActivity extends AppCompatActivity {
 
+    private Toast toast;
+
     /**
      * Method used to switch from current activity to other
      *
@@ -68,7 +70,10 @@ abstract public class BaseActivity extends AppCompatActivity {
     public void displayToast(String message) {
         if (TextUtils.isEmpty(message) || message.equalsIgnoreCase("null"))
             return;
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if (toast!=null)
+            toast.cancel();
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 

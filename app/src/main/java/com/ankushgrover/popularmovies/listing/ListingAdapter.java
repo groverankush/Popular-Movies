@@ -2,10 +2,7 @@ package com.ankushgrover.popularmovies.listing;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,25 +17,61 @@ import java.util.List;
 /**
  * Created by Ankush Grover(ankush.grover@finoit.co.in) on 19/6/18.
  */
-public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder> {
+public class ListingAdapter extends RecyclerBaseAdapter {
 
     private String TAG = ListingAdapter.class.getSimpleName();
     private Context context;
     private List<Movie> movies;
+    private ListingContract.View listingView;
 
     public ListingAdapter(Context context, List<Movie> movies) {
+        super(context, 0);
 
         this.context = context;
         this.movies = movies;
+        this.listingView = (ListingContract.View) context;
     }
 
-    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateItemViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_movie, parent, false));
+
+    }
+
+    @Override
+    public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if (viewHolder instanceof ViewHolder) {
+            ViewHolder holder = (ViewHolder) viewHolder;
+
+            Picasso.get()
+                    .load(makePosterPath(movies.get(position).getPosterPath()))
+                    .placeholder(R.drawable.ic_image_black_24dp)
+                    .into(holder.banner);
+        }
+    }
+
+    @Override
+    public int getTotalItemCount() {
+        return movies.size();
+    }
+
+    @Override
+    public int getNormalItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public boolean requireNext() {
+        return listingView.fetchMoreMovies();
+    }
+
+    /*@NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "create");
 
 
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_movie,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_movie, parent, false));
     }
 
     @Override
@@ -51,14 +84,13 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHold
                 .placeholder(R.drawable.ic_image_black_24dp)
                 .into(holder.banner);
     }
+*/
 
-
-    @Override
+    /*@Override
     public int getItemCount() {
 
-        Log.d(TAG, "item_count");
         return movies.size();
-    }
+    }*/
 
     private String makePosterPath(String part) {
 

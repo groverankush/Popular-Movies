@@ -12,6 +12,10 @@ public interface ListingContract {
 
         void moviesAdded();
 
+        void clearMoviesList();
+
+        boolean fetchMoreMovies();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -25,6 +29,14 @@ public interface ListingContract {
          * Method to fetch top movies from the database.
          */
         void fetchTopMovies();
+
+        /**
+         * Responsible for fetching movies based on user preference and current requests.
+         *
+         * @return
+         * @param: Forcibly fetch movies. Ignore the previous requests.
+         */
+        boolean fetchMovies(boolean force);
     }
 
 }
