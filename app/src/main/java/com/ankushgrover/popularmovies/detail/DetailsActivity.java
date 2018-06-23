@@ -14,7 +14,6 @@ import java.util.Locale;
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String MOVIE_DETAIL = "movieDetail";
-    private DetailViewModel model;
     private Movie movie;
 
     @Override
