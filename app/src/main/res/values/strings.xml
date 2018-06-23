@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="popular_movies">Popular Movies</string>
     <string name="settings">Settings</string>
     <string name="msg_something_went_wrong">Something went wrong.</string>
     <string name="network_error">It seems you\'re not connected to network.</string>
     <string name="genereal_error">Something went wrong. Please try again!</string>
+    <string name="top_rated">Top Rated Movies</string>
+    <string name="poster_of_movie">Poster of the movie.</string>
+    <string name="banner_of_movie">Banner of Movie.</string>
+    <string name="movie_detail">Movie Detail</string>
 
 
 </resources>

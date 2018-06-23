@@ -1,8 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".detail.DetailsActivity">
+    android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".detail.DetailsActivity">
+
+        <ImageView
+            android:id="@+id/iv_banner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/banner_width"
+            android:contentDescription="@string/banner_of_movie"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_medium">
+
+            <ImageView
+                android:id="@+id/iv_poster"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/poster_height"
+                android:layout_weight="1"
+                android:contentDescription="@string/poster_of_movie"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_large_1"
+                    android:textStyle="bold"
+                    tools:text="Movie" />
+
+                <TextView
+                    android:id="@+id/tv_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:textSize="@dimen/text_size_normal_1"
+                    android:textStyle="bold"
+                    tools:text="2016" />
+
+<!--                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:textSize="@dimen/text_size_normal_1"
+                    android:textStyle="bold"
+                    tools:text="120 minutes" />-->
+
+                <TextView
+                    android:id="@+id/tv_ratings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_normal_1"
+                    tools:text="8.4/10" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:padding="@dimen/margin_medium"
+            android:textSize="@dimen/text_size_normal_1"
+
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In at libero ac sapien iaculis egestas vitae vitae leo. Praesent a tempor leo. Proin mollis a dui dignissim vehicula. Nam sed interdum tellus. Sed pharetra, nisi quis lobo sagittis risus." />
+
+    </LinearLayout>
+
+</ScrollView>

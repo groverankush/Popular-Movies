@@ -1,5 +1,6 @@
 package com.ankushgrover.popularmovies.listing;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.ankushgrover.popularmovies.data.Movie;
@@ -15,6 +16,7 @@ public class ListingViewModel extends ViewModel {
 
     private List<Movie> movies;
     private NetworkResult result;
+    private MutableLiveData<Boolean> isLoading;
 
     public List<Movie> getMovies() {
         if (movies == null)
@@ -30,4 +32,13 @@ public class ListingViewModel extends ViewModel {
     public void setResult(NetworkResult result) {
         this.result = result;
     }
+
+    public MutableLiveData<Boolean> getIsLoading() {
+        if (isLoading == null) {
+            isLoading = new MutableLiveData<>();
+            isLoading.setValue(false);
+        }
+        return isLoading;
+    }
+
 }

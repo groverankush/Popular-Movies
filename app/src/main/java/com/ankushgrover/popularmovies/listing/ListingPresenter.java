@@ -1,5 +1,7 @@
 package com.ankushgrover.popularmovies.listing;
 
+import android.util.Log;
+
 import com.ankushgrover.popularmovies.BuildConfig;
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.data.source.MoviesRepository;
@@ -20,7 +22,6 @@ public class ListingPresenter implements ListingContract.Presenter {
     private MoviesRepository repository;
     private ListingViewModel viewModel;
     private ListingContract.View view;
-    private boolean isLoading;
 
 
     ListingPresenter(MoviesRepository repository, ListingViewModel viewModel, ListingContract.View view) {
@@ -32,7 +33,7 @@ public class ListingPresenter implements ListingContract.Presenter {
 
     @Override
     public void fetchPopularMovies() {
-        isLoading = true;
+        isLoading(true);
         Disposable disposable = repository.getSource().fetchPopularMovies(BuildConfig.MOVIE_DB_API_KEY, viewModel.getResult() == null ? 1 : viewModel.getResult().getPage() + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -40,11 +41,11 @@ public class ListingPresenter implements ListingContract.Presenter {
                             viewModel.setResult(networkResult);
                             viewModel.getMovies().addAll(networkResult.getResults());
                             view.moviesAdded();
-                            isLoading = false;
+                            isLoading(false);
                         },
                         throwable -> {
-                            view.generalResponse(R.string.msg_something_went_wrong);
-                            isLoading = false;
+                            errorLog(throwable, R.string.msg_something_went_wrong, R.string.genereal_error);
+                            isLoading(false);
                         });
 
         mDisposables.add(disposable);
@@ -52,19 +53,19 @@ public class ListingPresenter implements ListingContract.Presenter {
 
     @Override
     public void fetchTopMovies() {
-        isLoading = true;
+        isLoading(true);
         Disposable disposable = repository.getSource().fetchTopMovies(BuildConfig.MOVIE_DB_API_KEY, viewModel.getResult() == null ? 1 : viewModel.getResult().getPage() + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkResult -> {
-                            isLoading = false;
+                            isLoading(false);
                             viewModel.setResult(networkResult);
                             viewModel.getMovies().addAll(networkResult.getResults());
                             view.moviesAdded();
                         },
                         throwable -> {
-                            view.generalResponse(R.string.msg_something_went_wrong);
-                            isLoading = false;
+                            errorLog(throwable, R.string.msg_something_went_wrong, R.string.genereal_error);
+                            isLoading(false);
                         });
 
 
@@ -78,10 +79,10 @@ public class ListingPresenter implements ListingContract.Presenter {
             viewModel.getMovies().clear();
             viewModel.setResult(null);
             unsubscribe();
-            isLoading = false;
+            isLoading(false);
         }
 
-        if (!isLoading) {
+        if (!viewModel.getIsLoading().getValue()) {
             if (NetworkUtils.isConnectedToNetwork()) {
                 if (Preferences.isPopularMoviesSelected())
                     fetchPopularMovies();
@@ -89,7 +90,7 @@ public class ListingPresenter implements ListingContract.Presenter {
                 return true;
             } else {
                 view.generalResponse(R.string.network_error);
-                view.clearMoviesList();
+                view.onError(R.string.network_error);
             }
         }
         return false;
@@ -102,6 +103,23 @@ public class ListingPresenter implements ListingContract.Presenter {
 
     @Override
     public void unsubscribe() {
+        isLoading(false);
         mDisposables.clear();
+    }
+
+    @Override
+    public void errorLog(Throwable throwable, int generalResponse, int errorResponse) {
+        Log.e(getTag(), throwable.getMessage());
+        view.generalResponse(generalResponse);
+        view.onError(errorResponse);
+    }
+
+    @Override
+    public String getTag() {
+        return ListingPresenter.class.getSimpleName();
+    }
+
+    private void isLoading(boolean isLoading) {
+        viewModel.getIsLoading().setValue(isLoading);
     }
 }

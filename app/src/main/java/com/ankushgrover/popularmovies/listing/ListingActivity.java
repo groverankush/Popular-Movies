@@ -1,8 +1,10 @@
 package com.ankushgrover.popularmovies.listing;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.architecture.BaseActivity;
 import com.ankushgrover.popularmovies.data.source.MoviesRepository;
+import com.ankushgrover.popularmovies.detail.DetailsActivity;
+import com.ankushgrover.popularmovies.settings.Preferences;
 import com.ankushgrover.popularmovies.settings.SettingsActivity;
 
 public class ListingActivity extends BaseActivity implements ListingContract.View {
@@ -32,6 +36,7 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
 
         if (resultCode == RESULT_OK) {
             if (requestCode == SETTINGS_REQUEST_CODE) {
+                getSupportActionBar().setTitle(Preferences.getScreenType());
                 model.getMovies().clear();
                 model.setResult(null);
                 adapter.notifyDataSetChanged();
@@ -58,6 +63,7 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
         setContentView(R.layout.activity_listing);
 
 
+        getSupportActionBar().setTitle(Preferences.getScreenType());
         model = ViewModelProviders.of(this).get(ListingViewModel.class);
         presenter = new ListingPresenter(MoviesRepository.getInstance(), model, this);
 
@@ -71,6 +77,12 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
         errorTV = findViewById(R.id.tv_error);
         recycler = findViewById(R.id.recycler);
         swipe = findViewById(R.id.swipe);
+        model.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                swipe.setRefreshing(aBoolean);
+            }
+        });
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -84,12 +96,15 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
     private void initAdapter() {
 
 
-        swipe.setRefreshing(true);
-
         adapter = new ListingAdapter(this, model.getMovies());
         GridLayoutManager manager = new GridLayoutManager(this, 2);
         adapter.setRecyclerView(recycler);
         recycler.setLayoutManager(manager);
+        adapter.setOnItemCLickListener(position -> {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(DetailsActivity.MOVIE_DETAIL, model.getMovies().get(position));
+            switchActivity(DetailsActivity.class, bundle);
+        });
     }
 
 
@@ -126,23 +141,20 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
     }
 
     @Override
-    public void clearMoviesList() {
-
+    public void onError(int errorId) {
 
         swipe.setRefreshing(false);
 
-        if (model.getMovies().size() == 0) {
-            recycler.setVisibility(View.INVISIBLE);
-            errorTV.setVisibility(View.VISIBLE);
-            errorTV.setText(R.string.genereal_error);
-        }
+        recycler.setVisibility(model.getMovies().size() == 0 ? View.INVISIBLE : View.VISIBLE);
+        errorTV.setVisibility(model.getMovies().size() == 0 ? View.VISIBLE : View.GONE);
+        errorTV.setVisibility(View.VISIBLE);
 
     }
 
 
     @Override
     public boolean fetchMoreMovies() {
-        swipe.setRefreshing(true);
         return presenter.fetchMovies(false);
     }
+
 }
