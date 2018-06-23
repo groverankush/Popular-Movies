@@ -7,6 +7,9 @@ import android.support.annotation.StringRes;
  */
 public interface BaseView {
 
-    public void generalResponse(@StringRes int message);
+    void generalResponse(@StringRes int message);
+
+    void onError(@StringRes int errorId);
+
 
 }

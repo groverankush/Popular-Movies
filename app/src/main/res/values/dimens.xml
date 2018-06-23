@@ -29,6 +29,10 @@
     <dimen name="text_size_large_1">22sp</dimen>
     <dimen name="text_size_large_2">24sp</dimen>
     <dimen name="text_size_large_3">28sp</dimen>
+    <dimen name="text_size_xlarge_1">42sp</dimen>
+
+    <dimen name="banner_width">200dp</dimen>
+    <dimen name="poster_height">250dp</dimen>
 
 
 </resources>

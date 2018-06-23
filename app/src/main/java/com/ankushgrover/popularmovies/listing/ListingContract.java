@@ -12,9 +12,8 @@ public interface ListingContract {
 
         void moviesAdded();
 
-        void clearMoviesList();
-
         boolean fetchMoreMovies();
+
 
     }
 

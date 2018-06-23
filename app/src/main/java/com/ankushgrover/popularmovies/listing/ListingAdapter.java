@@ -1,7 +1,6 @@
 package com.ankushgrover.popularmovies.listing;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.data.Movie;
+import com.ankushgrover.popularmovies.utils.TextUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class ListingAdapter extends RecyclerBaseAdapter {
             ViewHolder holder = (ViewHolder) viewHolder;
 
             Picasso.get()
-                    .load(makePosterPath(movies.get(position).getPosterPath()))
+                    .load(TextUtils.makePosterPath(movies.get(position).getPosterPath()))
                     .placeholder(R.drawable.ic_image_black_24dp)
                     .into(holder.banner);
         }
@@ -65,49 +65,6 @@ public class ListingAdapter extends RecyclerBaseAdapter {
         return listingView.fetchMoreMovies();
     }
 
-    /*@NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "create");
-
-
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_movie, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        Log.d(TAG, "bind");
-
-        Picasso.get()
-                .load(makePosterPath(movies.get(position).getPosterPath()))
-                .placeholder(R.drawable.ic_image_black_24dp)
-                .into(holder.banner);
-    }
-*/
-
-    /*@Override
-    public int getItemCount() {
-
-        return movies.size();
-    }*/
-
-    private String makePosterPath(String part) {
-
-        //http://image.tmdb.org/t/p/w185/gBmrsugfWpiXRh13Vo3j0WW55qD.jpg
-
-
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
-                .authority("image.tmdb.org")
-                .appendPath("t")
-                .appendPath("p")
-                .appendPath("w185")
-                .appendEncodedPath(part);
-        return builder.build().toString();
-
-
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -117,6 +74,8 @@ public class ListingAdapter extends RecyclerBaseAdapter {
             super(itemView);
 
             banner = itemView.findViewById(R.id.iv_banner);
+
+            itemView.setOnClickListener(v -> onItemCLicked(getAdapterPosition()));
 
         }
     }

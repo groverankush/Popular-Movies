@@ -44,4 +44,14 @@ public class Preferences {
         return getOrderPreference().equals(App.getApplication().getString(R.string.val_popularity));
     }
 
+    public static String getScreenType() {
+
+        return App
+                .getApplication()
+                .getString(getOrderPreference()
+                        .equals(App.getApplication()
+                                .getString(R.string.val_popularity)) ? R.string.popular_movies : R.string.top_rated);
+
+    }
+
 }

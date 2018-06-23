@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.StringTokenizer;
 
-/**
- * Created by emp118 on 8/12/2016.
- */
+
 public abstract class RecyclerBaseAdapter extends Adapter<ViewHolder> {
 
     private final int FOOTER_ITEM = 1;
