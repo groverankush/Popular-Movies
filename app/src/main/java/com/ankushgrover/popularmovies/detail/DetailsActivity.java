@@ -20,7 +20,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.details);
 
         //model = ViewModelProviders.of(this).get(DetailViewModel.class);
 
@@ -39,7 +39,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         TextUtils.setText(this, R.id.tv_name, TextUtils.isEmpty(movie.getTitle()) ? "Title not available" : movie.getTitle());
         TextUtils.setText(this, R.id.tv_year, TextUtils.isEmpty(movie.getReleaseDate()) ? "Release date not available" : movie.getReleaseDate().split("-")[0]);
-        TextUtils.setText(this, R.id.tv_ratings, movie.getVoteAverage() == 0.0f ? "Votes not available" : String.format(Locale.ENGLISH, "%.1f/10", movie.getVoteAverage()));
+        TextUtils.setText(this, R.id.tv_ratings, String.format(Locale.ENGLISH, "%.1f", movie.getVoteAverage()));
         TextUtils.setText(this, R.id.tv_description, TextUtils.isEmpty(movie.getOverview()) ? "Description not available" : movie.getOverview());
 
 
