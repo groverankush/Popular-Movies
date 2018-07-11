@@ -10,9 +10,30 @@ public interface DetailsContract {
 
     interface View extends BaseView {
 
+        void setupHead();
+
+        void onReceiveTrailers();
+
+        void errorLoadingTrailers();
+
+        void onReceiveReviews();
+
+        void errorLoadingReviews();
+
+
     }
 
     interface Presenter extends BasePresenter {
+
+        /**
+         * Method to request movie trailers.
+         */
+        void loadTrailers();
+
+        /**
+         * Method to load movie reviews.
+         */
+        void loadReviews();
 
     }
 

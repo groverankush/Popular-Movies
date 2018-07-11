@@ -2,6 +2,7 @@ package com.ankushgrover.popularmovies.architecture;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -68,12 +69,7 @@ abstract public class BaseActivity extends AppCompatActivity {
      * @param message message to be displayed
      */
     public void displayToast(String message) {
-        if (TextUtils.isEmpty(message) || message.equalsIgnoreCase("null"))
-            return;
-        if (toast!=null)
-            toast.cancel();
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
+        displayToast(message, true);
     }
 
 
@@ -84,5 +80,19 @@ abstract public class BaseActivity extends AppCompatActivity {
      */
     public void displayToast(int resId) {
         displayToast(getString(resId));
+    }
+
+    public void displayToast(@StringRes int resId, boolean replaceExisting) {
+        displayToast(getString(resId), replaceExisting);
+    }
+
+    public void displayToast(String message, boolean replaceExisting) {
+
+        if (TextUtils.isEmpty(message) || message.equalsIgnoreCase("null"))
+            return;
+        if (toast != null && replaceExisting)
+            toast.cancel();
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

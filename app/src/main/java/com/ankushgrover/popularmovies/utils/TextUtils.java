@@ -3,7 +3,10 @@ package com.ankushgrover.popularmovies.utils;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.IdRes;
+import android.view.View;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 public class TextUtils {
 
@@ -52,8 +55,34 @@ public class TextUtils {
 
     }
 
+    public static String makeTrailerThumbPath(String key) {
+        //https://www.youtube.com/watch?v=vn9mMeWcgoM
+        //https://img.youtube.com/vi/vn9mMeWcgoM/0.jpg
+        return String.format(Locale.ENGLISH, "https://img.youtube.com/vi/%s/0.jpg", key);
+    }
+
+    public static String makeTrailerPath(String key) {
+        return String.format(Locale.ENGLISH, "https://www.youtube.com/watch?v=%s", key);
+    }
+
     public static void setText(Activity activity, @IdRes int viewId, String text) {
         ((TextView) activity.findViewById(viewId)).setText(text);
+    }
+
+    /**
+     * set text on a text view
+     *
+     * @param viewId
+     * @param text
+     * @return
+     */
+    public static void setTextForView(View view, int viewId, String text, boolean goneIfEmpty) {
+        TextView tv = (TextView) view.findViewById(viewId);
+        if (TextUtils.isEmpty(text)) {
+            if (goneIfEmpty)
+                tv.setVisibility(View.GONE);
+        } else
+            tv.setText(text);
     }
 
     public static boolean isEmpty(String s) {

@@ -1,4 +1,4 @@
-package com.ankushgrover.popularmovies.data;
+package com.ankushgrover.popularmovies.data.models.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_letter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_circle"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_normal_2"
+            tools:text="X" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:text="NAME" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:textSize="@dimen/text_size_normal_1"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In at libero ac sapien iaculis egestas vitae vitae leo. Praesent a tempor leo. Proin mollis a dui dignissim vehicula. Nam sed interdum tellus. Sed pharetra, nisi quis lobo sagittis risus." />
+
+</LinearLayout>

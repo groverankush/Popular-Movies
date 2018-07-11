@@ -8,6 +8,11 @@
     <string name="poster_of_movie">Poster of the movie.</string>
     <string name="banner_of_movie">Banner of Movie.</string>
     <string name="movie_detail">Movie Detail</string>
+    <string name="no_trailers">No trailers to show.</string>
+    <string name="no_reviews">No reviews to show.</string>
+
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
 
 
 </resources>
