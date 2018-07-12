@@ -99,12 +99,11 @@
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In at libero ac sapien iaculis egestas vitae vitae leo. Praesent a tempor leo. Proin mollis a dui dignissim vehicula. Nam sed interdum tellus. Sed pharetra, nisi quis lobo sagittis risus." />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/btn_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="52dp"
-            android:layout_marginTop="16dp"
-            android:clickable="true"
+            android:layout_marginEnd="28dp"
+            android:layout_marginTop="28dp"
             android:src="@drawable/ic_favorite_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,18 +68,21 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
         Movie movie = model.getMovie();
         Picasso.get()
                 .load(TextUtils.makePosterPath(movie.getPosterPath()))
-                .placeholder(R.drawable.ic_image_black_24dp)
+                .placeholder(R.drawable.placeholder_portrait)
                 .into((ImageView) findViewById(R.id.iv_poster));
 
         Picasso.get()
                 .load(TextUtils.makeBannerPath(movie.getBackdropPath()))
+                .placeholder(R.drawable.placeholder_landscape)
                 .into((ImageView) findViewById(R.id.iv_banner));
 
 
-        TextUtils.setText(this, R.id.tv_name, TextUtils.isEmpty(movie.getTitle()) ? "Title not available" : movie.getTitle());
-        TextUtils.setText(this, R.id.tv_year, TextUtils.isEmpty(movie.getReleaseDate()) ? "Release date not available" : movie.getReleaseDate().split("-")[0]);
+        TextUtils.setText(this, R.id.tv_name, TextUtils.isEmpty(movie.getTitle()) ? getString(R.string.title_not_available) : movie.getTitle());
+        TextUtils.setText(this, R.id.tv_year, TextUtils.isEmpty(movie.getReleaseDate()) ? getString(R.string.release_date_not_available) : movie.getReleaseDate().split("-")[0]);
         TextUtils.setText(this, R.id.tv_ratings, String.format(Locale.ENGLISH, "%.1f", movie.getVoteAverage()));
-        TextUtils.setText(this, R.id.tv_description, TextUtils.isEmpty(movie.getOverview()) ? "Description not available" : movie.getOverview());
+        TextUtils.setText(this, R.id.tv_description, TextUtils.isEmpty(movie.getOverview()) ? getString(R.string.description_not_available) : movie.getOverview());
+        FloatingActionButton like = findViewById(R.id.btn_like);
+        like.setOnClickListener(v -> {});
     }
 
 
@@ -99,6 +103,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
                         trailerLayout.setOnClickListener(v -> openWebPage(TextUtils.makeTrailerPath(trailer.getKey())));
                         Picasso.get()
                                 .load(TextUtils.makeTrailerThumbPath(trailer.getKey()))
+                                .placeholder(R.drawable.placeholder_landscape)
                                 .into((ImageView) trailerLayout.findViewById(R.id.thumb));
                         trailersLayout.addView(trailerLayout);
                     }

@@ -45,7 +45,7 @@ public class ListingAdapter extends RecyclerBaseAdapter {
 
             Picasso.get()
                     .load(TextUtils.makePosterPath(movies.get(position).getPosterPath()))
-                    .placeholder(R.drawable.ic_image_black_24dp)
+                    .placeholder(R.drawable.placeholder_portrait)
                     .into(holder.banner);
         }
     }

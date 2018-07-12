@@ -35,6 +35,11 @@ public interface DetailsContract {
          */
         void loadReviews();
 
+        /**
+         * Method to start db transaction to like
+         */
+        void likeMovie();
+
     }
 
 
