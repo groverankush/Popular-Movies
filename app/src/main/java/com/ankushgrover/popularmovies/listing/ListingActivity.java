@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.architecture.BaseActivity;
-import com.ankushgrover.popularmovies.data.source.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
 import com.ankushgrover.popularmovies.detail.DetailsActivity;
 import com.ankushgrover.popularmovies.settings.Preferences;
 import com.ankushgrover.popularmovies.settings.SettingsActivity;

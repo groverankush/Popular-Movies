@@ -14,7 +14,7 @@ import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MovieDao movieDao();
 
-    public abstract MovieDao ReviewDao();
+    public abstract ReviewDao ReviewDao();
 
-    public abstract MovieDao TrailerDao();
+    public abstract TrailerDao TrailerDao();
 }

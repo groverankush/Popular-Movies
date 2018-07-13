@@ -18,7 +18,7 @@ import com.ankushgrover.popularmovies.architecture.BaseActivity;
 import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.ankushgrover.popularmovies.data.models.review.Review;
 import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
-import com.ankushgrover.popularmovies.data.source.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
 import com.ankushgrover.popularmovies.utils.TextUtils;
 import com.squareup.picasso.Picasso;
 

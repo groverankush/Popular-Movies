@@ -14,8 +14,7 @@ public class Trailer {
 
     @SerializedName("id")
     @Expose
-    @PrimaryKey
-    private String id;
+    private int id;
     @SerializedName("iso_639_1")
     @Expose
     private String iso6391;
@@ -33,7 +32,7 @@ public class Trailer {
     private String site;
     @SerializedName("size")
     @Expose
-    private Integer size;
+    private int size;
     @SerializedName("type")
     @Expose
     private String type;
@@ -41,11 +40,11 @@ public class Trailer {
     @ColumnInfo(name = "movieId")
     private int movieId;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -89,11 +88,11 @@ public class Trailer {
         this.site = site;
     }
 
-    public Integer getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
@@ -105,4 +104,11 @@ public class Trailer {
         this.type = type;
     }
 
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
 }

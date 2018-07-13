@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.ankushgrover.popularmovies.BuildConfig;
 import com.ankushgrover.popularmovies.R;
-import com.ankushgrover.popularmovies.data.source.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
 import com.ankushgrover.popularmovies.settings.Preferences;
 import com.ankushgrover.popularmovies.utils.NetworkUtils;
 

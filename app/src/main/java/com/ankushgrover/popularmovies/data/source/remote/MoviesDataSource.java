@@ -24,7 +24,7 @@ public interface MoviesDataSource {
                                          @Query("page") int pageNumber);
 
     @GET("movie/{id}/videos")
-    Single<TrailerResult> fetchTrailers(@Path("id") String movieId,
+    Single<TrailerResult> fetchTrailers(@Path("id") int movieId,
                                         @Query("api_key") String key);
 
     @GET("movie/{id}/reviews")

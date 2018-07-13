@@ -3,7 +3,7 @@ package com.ankushgrover.popularmovies.detail;
 import android.util.Log;
 
 import com.ankushgrover.popularmovies.BuildConfig;
-import com.ankushgrover.popularmovies.data.source.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
 import com.ankushgrover.popularmovies.utils.NetworkUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,7 +33,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
     public void loadTrailers() {
         if (NetworkUtils.isConnectedToNetwork()) {
 
-            Disposable disposable = repository.getSource().fetchTrailers(viewModel.getMovie().getId().toString(), BuildConfig.MOVIE_DB_API_KEY)
+            Disposable disposable = repository.getSource().fetchTrailers(viewModel.getMovie().getId(), BuildConfig.MOVIE_DB_API_KEY)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(trailerResult -> {

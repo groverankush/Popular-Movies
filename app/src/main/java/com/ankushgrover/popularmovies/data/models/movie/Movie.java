@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Ankush Grover(ankushgrover02@gmail.com) on 5/6/18.
  */
-@Entity
+@Entity()
 public class Movie implements Parcelable {
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
