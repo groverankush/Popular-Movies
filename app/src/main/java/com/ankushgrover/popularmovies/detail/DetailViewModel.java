@@ -14,6 +14,7 @@ public class DetailViewModel extends ViewModel {
     private Movie movie;
     private ArrayList<Trailer> trailers;
     private ArrayList<Review> reviews;
+    private boolean isLiked;
 
     public DetailViewModel() {
         this.trailers = new ArrayList<>();
@@ -46,5 +47,13 @@ public class DetailViewModel extends ViewModel {
 
         this.reviews.clear();
         this.reviews.addAll(reviews);
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

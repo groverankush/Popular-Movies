@@ -1,9 +1,17 @@
-
 package com.ankushgrover.popularmovies.data.models.review;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+
+import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId", onDelete = CASCADE))
 public class Review {
 
     @SerializedName("author")
@@ -14,10 +22,14 @@ public class Review {
     private String content;
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     private String id;
     @SerializedName("url")
     @Expose
     private String url;
+
+    @ColumnInfo(name = "movieId")
+    private int movieId;
 
     public String getAuthor() {
         return author;

@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 19/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 19/6/18.
  */
 public class ListingAdapter extends RecyclerBaseAdapter {
 

@@ -1,4 +1,4 @@
-package com.ankushgrover.popularmovies.data.source;
+package com.ankushgrover.popularmovies.data.source.remote;
 
 import com.ankushgrover.popularmovies.data.models.movie.NetworkResult;
 import com.ankushgrover.popularmovies.data.models.review.ReviewResult;

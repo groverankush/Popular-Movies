@@ -1,13 +1,20 @@
-
 package com.ankushgrover.popularmovies.data.models.trailer;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+
+import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId", onDelete = ForeignKey.CASCADE))
 public class Trailer {
 
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     private String id;
     @SerializedName("iso_639_1")
     @Expose
@@ -30,6 +37,9 @@ public class Trailer {
     @SerializedName("type")
     @Expose
     private String type;
+
+    @ColumnInfo(name = "movieId")
+    private int movieId;
 
     public String getId() {
         return id;

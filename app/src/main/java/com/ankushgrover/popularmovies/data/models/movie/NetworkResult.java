@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 12/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 12/6/18.
  */
 public class NetworkResult implements Parcelable {
 

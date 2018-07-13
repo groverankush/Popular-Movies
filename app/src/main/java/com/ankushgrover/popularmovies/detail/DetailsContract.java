@@ -10,6 +10,7 @@ public interface DetailsContract {
 
     interface View extends BaseView {
 
+
         void setupHead();
 
         void onReceiveTrailers();

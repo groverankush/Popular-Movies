@@ -64,10 +64,20 @@ public class DetailsPresenter implements DetailsContract.Presenter {
     }
 
     @Override
+    public void likeMovie() {
+
+    }
+
+    @Override
     public void subscribe() {
         view.setupHead();
-        loadTrailers();
-        loadReviews();
+        if (viewModel.getTrailers().size() == 0)
+            loadTrailers();
+        else view.onReceiveTrailers();
+
+        if (viewModel.getReviews().size() == 0)
+            loadReviews();
+        else view.onReceiveReviews();
     }
 
     @Override

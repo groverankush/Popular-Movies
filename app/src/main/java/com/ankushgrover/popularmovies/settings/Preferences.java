@@ -9,7 +9,7 @@ import com.ankushgrover.popularmovies.app.App;
 
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 11/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 11/6/18.
  */
 public class Preferences {
 
