@@ -2,6 +2,7 @@ package com.ankushgrover.popularmovies.data.source;
 
 import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.ankushgrover.popularmovies.data.models.movie.NetworkResult;
+import com.ankushgrover.popularmovies.data.models.review.Review;
 import com.ankushgrover.popularmovies.data.models.review.ReviewResult;
 import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
 import com.ankushgrover.popularmovies.data.models.trailer.TrailerResult;
@@ -37,7 +38,7 @@ public interface DataContract {
 
     interface TrailersContract {
 
-        Single<TrailerResult> fetchTrailers();
+        Single<TrailerResult> fetchTrailers(int movieId);
 
         Completable insertTrailers(ArrayList<Trailer> trailers, int movieId);
 
@@ -45,9 +46,9 @@ public interface DataContract {
 
     interface ReviewsContract {
 
-        Single<TrailerResult> fetchTrailers();
+        Single<ReviewResult> fetchReviews(int movieId);
 
-        Completable insertTrailers(ArrayList<Trailer> trailers, int movieId);
+        Completable insertReviews(ArrayList<Review> reviews, int movieId);
 
     }
 

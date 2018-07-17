@@ -18,6 +18,7 @@ import com.ankushgrover.popularmovies.architecture.BaseActivity;
 import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.ankushgrover.popularmovies.data.models.review.Review;
 import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
+import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
 import com.ankushgrover.popularmovies.utils.TextUtils;
 import com.squareup.picasso.Picasso;
@@ -44,7 +45,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
         model = ViewModelProviders.of(this).get(DetailViewModel.class);
         model.setMovie(movie);
 
-        presenter = new DetailsPresenter(MoviesRepository.getInstance(), model, this);
+        presenter = new DetailsPresenter(DataManager.getInstance(), model, this);
 
         getSupportActionBar().setTitle(movie.getTitle());
 
@@ -82,7 +83,8 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
         TextUtils.setText(this, R.id.tv_ratings, String.format(Locale.ENGLISH, "%.1f", movie.getVoteAverage()));
         TextUtils.setText(this, R.id.tv_description, TextUtils.isEmpty(movie.getOverview()) ? getString(R.string.description_not_available) : movie.getOverview());
         FloatingActionButton like = findViewById(R.id.btn_like);
-        like.setOnClickListener(v -> {});
+        like.setOnClickListener(v -> {
+        });
     }
 
 
@@ -114,6 +116,12 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
     @Override
     public void errorLoadingTrailers() {
+
+        LinearLayout trailersLayout = findViewById(R.id.trailers);
+        trailersLayout.removeAllViews();
+        TextView message = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_message, trailersLayout, false);
+        message.setText(R.string.error_loading_trailers);
+        trailersLayout.addView(message);
 
     }
 
@@ -152,7 +160,11 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
     @Override
     public void errorLoadingReviews() {
-
+        LinearLayout trailersLayout = findViewById(R.id.trailers);
+        trailersLayout.removeAllViews();
+        TextView message = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_message, trailersLayout, false);
+        message.setText(R.string.error_loading_reviews);
+        trailersLayout.addView(message);
     }
 
     @Override
@@ -176,6 +188,6 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
     private void setLetterColor(View v) {
 
         GradientDrawable bgShape = (GradientDrawable) v.getBackground();
-        bgShape.setColor(ContextCompat.getColor(this, COLORS[random.nextInt(COLORS.length)] ));
+        bgShape.setColor(ContextCompat.getColor(this, COLORS[random.nextInt(COLORS.length)]));
     }
 }

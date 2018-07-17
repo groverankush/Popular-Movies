@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.ankushgrover.popularmovies.BuildConfig;
 import com.ankushgrover.popularmovies.R;
-import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.settings.Preferences;
 import com.ankushgrover.popularmovies.utils.NetworkUtils;
 
@@ -19,13 +19,14 @@ import io.reactivex.schedulers.Schedulers;
 public class ListingPresenter implements ListingContract.Presenter {
 
     private CompositeDisposable mDisposables;
-    private MoviesRepository repository;
+    private DataManager dataManager;
     private ListingViewModel viewModel;
     private ListingContract.View view;
 
 
-    ListingPresenter(MoviesRepository repository, ListingViewModel viewModel, ListingContract.View view) {
-        this.repository = repository;
+    ListingPresenter(DataManager dataManager, ListingViewModel viewModel, ListingContract.View view) {
+        this.dataManager = dataManager;
+
         this.viewModel = viewModel;
         this.view = view;
         this.mDisposables = new CompositeDisposable();
@@ -34,7 +35,7 @@ public class ListingPresenter implements ListingContract.Presenter {
     @Override
     public void fetchPopularMovies() {
         isLoading(true);
-        Disposable disposable = repository.getSource().fetchPopularMovies(BuildConfig.MOVIE_DB_API_KEY, viewModel.getResult() == null ? 1 : viewModel.getResult().getPage() + 1)
+        Disposable disposable = dataManager.getMoviesRepository().fetchPopularMovies(viewModel.getResult() == null ? 1 : viewModel.getResult().getPage() + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkResult -> {
@@ -54,7 +55,7 @@ public class ListingPresenter implements ListingContract.Presenter {
     @Override
     public void fetchTopMovies() {
         isLoading(true);
-        Disposable disposable = repository.getSource().fetchTopMovies(BuildConfig.MOVIE_DB_API_KEY, viewModel.getResult() == null ? 1 : viewModel.getResult().getPage() + 1)
+        Disposable disposable = dataManager.getMoviesRepository().fetchTopMovies(viewModel.getResult() == null ? 1 : viewModel.getResult().getPage() + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkResult -> {

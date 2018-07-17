@@ -29,6 +29,9 @@ public class Movie implements Parcelable {
         }
     };
 
+    public Movie() {
+    }
+
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;

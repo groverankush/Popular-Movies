@@ -1,18 +1,21 @@
 package com.ankushgrover.popularmovies.data.models.review;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
-
-@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId", onDelete = CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId"), indices = {@Index("movieId")})
 public class Review {
+
+    @PrimaryKey()
+    private int _id;
+
+    private int movieId;
 
     @SerializedName("author")
     @Expose
@@ -22,14 +25,13 @@ public class Review {
     private String content;
     @SerializedName("id")
     @Expose
-    @PrimaryKey
     private String id;
     @SerializedName("url")
     @Expose
     private String url;
 
-    @ColumnInfo(name = "movieId")
-    private int movieId;
+    public Review() {
+    }
 
     public String getAuthor() {
         return author;
@@ -63,4 +65,19 @@ public class Review {
         this.url = url;
     }
 
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
 }

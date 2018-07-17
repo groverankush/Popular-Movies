@@ -28,6 +28,6 @@ public interface MoviesDataSource {
                                         @Query("api_key") String key);
 
     @GET("movie/{id}/reviews")
-    Single<ReviewResult> fetchReviews(@Path("id") String movieId,
+    Single<ReviewResult> fetchReviews(@Path("id") int movieId,
                                       @Query("api_key") String key);
 }

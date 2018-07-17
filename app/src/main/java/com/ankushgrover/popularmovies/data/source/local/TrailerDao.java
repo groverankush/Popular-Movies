@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -20,6 +21,6 @@ public interface TrailerDao {
     void insert(ArrayList<Trailer> trailers);
 
     @Query("Select * from Trailer where movieId = :movieId")
-    Flowable<ArrayList<Trailer>> getTrailers(int movieId);
+    Flowable<List<Trailer>> getTrailers(int movieId);
 
 }

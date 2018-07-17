@@ -8,6 +8,7 @@ import com.ankushgrover.popularmovies.data.models.review.Review;
 import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -20,5 +21,5 @@ public interface ReviewDao {
     void insert(ArrayList<Review> reviews);
 
     @Query("Select * from Review where movieId = :movieId")
-    Flowable<ArrayList<Trailer>> getReviews(int movieId);
+    Flowable<List<Review>> getReviews(int movieId);
 }

@@ -2,8 +2,7 @@ package com.ankushgrover.popularmovies.detail;
 
 import android.util.Log;
 
-import com.ankushgrover.popularmovies.BuildConfig;
-import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.utils.NetworkUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,13 +16,14 @@ import io.reactivex.schedulers.Schedulers;
 public class DetailsPresenter implements DetailsContract.Presenter {
 
     private final CompositeDisposable disposables;
-    private MoviesRepository repository;
+    private DataManager dataManager;
     private DetailViewModel viewModel;
     private DetailsContract.View view;
 
 
-    public DetailsPresenter(MoviesRepository repository, DetailViewModel viewModel, DetailsContract.View view) {
-        this.repository = repository;
+    public DetailsPresenter(DataManager dataManager, DetailViewModel viewModel, DetailsContract.View view) {
+        this.dataManager = dataManager;
+
         this.viewModel = viewModel;
         this.view = view;
         this.disposables = new CompositeDisposable();
@@ -33,7 +33,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
     public void loadTrailers() {
         if (NetworkUtils.isConnectedToNetwork()) {
 
-            Disposable disposable = repository.getSource().fetchTrailers(viewModel.getMovie().getId(), BuildConfig.MOVIE_DB_API_KEY)
+            Disposable disposable = dataManager.getTrailersRepository().fetchTrailers(viewModel.getMovie().getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(trailerResult -> {
@@ -42,7 +42,10 @@ public class DetailsPresenter implements DetailsContract.Presenter {
                     }, throwable -> view.errorLoadingTrailers());
             disposables.add(disposable);
 
-        } else view.errorLoadingTrailers();
+        } else {
+            viewModel.getTrailers().clear();
+            view.errorLoadingTrailers();
+        }
 
     }
 
@@ -50,7 +53,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
     public void loadReviews() {
 
         if (NetworkUtils.isConnectedToNetwork()) {
-            Disposable disposable = repository.getSource().fetchReviews(viewModel.getMovie().getId().toString(), BuildConfig.MOVIE_DB_API_KEY)
+            Disposable disposable = dataManager.getReviewsRepository().fetchReviews(viewModel.getMovie().getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(reviewResult -> {
@@ -58,7 +61,10 @@ public class DetailsPresenter implements DetailsContract.Presenter {
                         view.onReceiveReviews();
                     }, throwable -> view.errorLoadingReviews());
             disposables.add(disposable);
-        } else view.errorLoadingReviews();
+        } else {
+            viewModel.getReviews().clear();
+            view.errorLoadingReviews();
+        }
 
 
     }
@@ -71,6 +77,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
     @Override
     public void subscribe() {
         view.setupHead();
+
         if (viewModel.getTrailers().size() == 0)
             loadTrailers();
         else view.onReceiveTrailers();

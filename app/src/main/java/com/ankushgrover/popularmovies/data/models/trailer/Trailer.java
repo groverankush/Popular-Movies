@@ -1,20 +1,25 @@
 package com.ankushgrover.popularmovies.data.models.trailer;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId", onDelete = ForeignKey.CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId"), indices = {@Index("movieId")})
 public class Trailer {
+
+    @PrimaryKey()
+    private int _id;
+
+    private int movieId;
 
     @SerializedName("id")
     @Expose
-    private int id;
+    private String id;
     @SerializedName("iso_639_1")
     @Expose
     private String iso6391;
@@ -32,19 +37,26 @@ public class Trailer {
     private String site;
     @SerializedName("size")
     @Expose
-    private int size;
+    private Integer size;
     @SerializedName("type")
     @Expose
     private String type;
+    public Trailer() {
+    }
 
-    @ColumnInfo(name = "movieId")
-    private int movieId;
+    public int getMovieId() {
+        return movieId;
+    }
 
-    public int getId() {
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -88,11 +100,11 @@ public class Trailer {
         this.site = site;
     }
 
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
@@ -104,11 +116,11 @@ public class Trailer {
         this.type = type;
     }
 
-    public int getMovieId() {
-        return movieId;
+    public int get_id() {
+        return _id;
     }
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 }

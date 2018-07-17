@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.architecture.BaseActivity;
-import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
+import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.detail.DetailsActivity;
 import com.ankushgrover.popularmovies.settings.Preferences;
 import com.ankushgrover.popularmovies.settings.SettingsActivity;
@@ -65,7 +65,7 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
 
         getSupportActionBar().setTitle(Preferences.getScreenType());
         model = ViewModelProviders.of(this).get(ListingViewModel.class);
-        presenter = new ListingPresenter(MoviesRepository.getInstance(), model, this);
+        presenter = new ListingPresenter(DataManager.getInstance(), model, this);
 
         initView();
         initAdapter();
