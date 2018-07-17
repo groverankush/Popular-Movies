@@ -9,7 +9,7 @@ import com.ankushgrover.popularmovies.app.App;
 
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 11/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 11/6/18.
  */
 public class Preferences {
 
@@ -44,13 +44,24 @@ public class Preferences {
         return getOrderPreference().equals(App.getApplication().getString(R.string.val_popularity));
     }
 
+    public static boolean isFavouritesSelected() {
+        return getOrderPreference().equals(App.getApplication().getString(R.string.val_favourites));
+    }
+
     public static String getScreenType() {
 
-        return App
-                .getApplication()
-                .getString(getOrderPreference()
-                        .equals(App.getApplication()
-                                .getString(R.string.val_popularity)) ? R.string.popular_movies : R.string.top_rated);
+        int textId;
+        String orderPreference = getOrderPreference();
+
+        if (orderPreference.equals(App.getApplication()
+                .getString(R.string.val_popularity))) {
+            textId = R.string.popular_movies;
+        } else if (orderPreference.equals(App.getApplication()
+                .getString(R.string.val_ratings)))
+            textId = R.string.top_rated;
+        else textId = R.string.val_favourites;
+
+        return App.getApplication().getString(textId);
 
     }
 

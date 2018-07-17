@@ -2,12 +2,13 @@ package com.ankushgrover.popularmovies.architecture;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 11/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 11/6/18.
  */
 abstract public class BaseActivity extends AppCompatActivity {
 
@@ -61,6 +62,27 @@ abstract public class BaseActivity extends AppCompatActivity {
         startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * Method to back activity with result ok with out data
+     */
+    public void backActivityWithResultOk() {
+        backActivityWithResultOk(null);
+    }
+
+    /**
+     * Method to back activity with result ok with data
+     * @param bundle
+     */
+    public void backActivityWithResultOk(Bundle bundle) {
+        if (bundle != null) {
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            setResult(RESULT_OK, intent);
+        } else
+            setResult(RESULT_OK);
+        finish();
+    }
+
 
     /**
      * Method used to display short duration toast
@@ -68,12 +90,7 @@ abstract public class BaseActivity extends AppCompatActivity {
      * @param message message to be displayed
      */
     public void displayToast(String message) {
-        if (TextUtils.isEmpty(message) || message.equalsIgnoreCase("null"))
-            return;
-        if (toast!=null)
-            toast.cancel();
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
+        displayToast(message, true);
     }
 
 
@@ -84,5 +101,19 @@ abstract public class BaseActivity extends AppCompatActivity {
      */
     public void displayToast(int resId) {
         displayToast(getString(resId));
+    }
+
+    public void displayToast(@StringRes int resId, boolean replaceExisting) {
+        displayToast(getString(resId), replaceExisting);
+    }
+
+    public void displayToast(String message, boolean replaceExisting) {
+
+        if (TextUtils.isEmpty(message) || message.equalsIgnoreCase("null"))
+            return;
+        if (toast != null && replaceExisting)
+            toast.cancel();
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

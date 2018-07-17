@@ -3,14 +3,14 @@ package com.ankushgrover.popularmovies.listing;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.ankushgrover.popularmovies.data.Movie;
-import com.ankushgrover.popularmovies.data.NetworkResult;
+import com.ankushgrover.popularmovies.data.models.movie.Movie;
+import com.ankushgrover.popularmovies.data.models.movie.NetworkResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 20/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 20/6/18.
  */
 public class ListingViewModel extends ViewModel {
 

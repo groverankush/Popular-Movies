@@ -1,4 +1,4 @@
-package com.ankushgrover.popularmovies.data;
+package com.ankushgrover.popularmovies.data.models.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 12/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 12/6/18.
  */
 public class NetworkResult implements Parcelable {
 
@@ -32,6 +32,9 @@ public class NetworkResult implements Parcelable {
     @Expose
     private long totalPages;
     private List<Movie> results;
+
+    public NetworkResult() {
+    }
 
     protected NetworkResult(Parcel in) {
         page = in.readInt();

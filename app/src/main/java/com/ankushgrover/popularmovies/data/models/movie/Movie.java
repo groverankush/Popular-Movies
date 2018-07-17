@@ -1,5 +1,8 @@
-package com.ankushgrover.popularmovies.data;
+package com.ankushgrover.popularmovies.data.models.movie;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,13 +14,27 @@ import java.util.List;
 /**
  * Created by Ankush Grover(ankushgrover02@gmail.com) on 5/6/18.
  */
+@Entity()
 public class Movie implements Parcelable {
 
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+    private boolean isLiked;
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     private Integer id;
     @SerializedName("video")
     @Expose
@@ -42,6 +59,7 @@ public class Movie implements Parcelable {
     private String originalTitle;
     @SerializedName("genre_ids")
     @Expose
+    @Ignore
     private List<Integer> genreIds = null;
     @SerializedName("backdrop_path")
     @Expose
@@ -55,6 +73,8 @@ public class Movie implements Parcelable {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+    public Movie() {
+    }
 
     protected Movie(Parcel in) {
         if (in.readByte() == 0) {
@@ -89,18 +109,6 @@ public class Movie implements Parcelable {
         overview = in.readString();
         releaseDate = in.readString();
     }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
 
     public Integer getVoteCount() {
         return voteCount;
@@ -254,5 +262,13 @@ public class Movie implements Parcelable {
         dest.writeByte((byte) (adult == null ? 0 : adult ? 1 : 2));
         dest.writeString(overview);
         dest.writeString(releaseDate);
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

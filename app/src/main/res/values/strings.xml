@@ -8,6 +8,19 @@
     <string name="poster_of_movie">Poster of the movie.</string>
     <string name="banner_of_movie">Banner of Movie.</string>
     <string name="movie_detail">Movie Detail</string>
+    <string name="no_trailers">No trailers to show.</string>
+    <string name="no_reviews">No reviews to show.</string>
+
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
+    <string name="title_not_available">Title not available</string>
+    <string name="release_date_not_available">Release date not available</string>
+    <string name="description_not_available">Description not available</string>
+    <string name="error_loading_trailers">Error loading trailers!</string>
+    <string name="error_loading_reviews">Error loading reviews!</string>
+    <string name="added_to_favourites">Movie added to favourites!</string>
+    <string name="removed_from_favourites">Movie removed from favourites!</string>
+    <string name="no_movies">No movies to show!</string>
 
 
 </resources>

@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ankushgrover.popularmovies.R;
-import com.ankushgrover.popularmovies.data.Movie;
+import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.ankushgrover.popularmovies.utils.TextUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 /**
- * Created by Ankush Grover(ankush.grover@finoit.co.in) on 19/6/18.
+ * Created by Ankush Grover(ankushgrover02@gmail.com) on 19/6/18.
  */
 public class ListingAdapter extends RecyclerBaseAdapter {
 
@@ -45,7 +45,7 @@ public class ListingAdapter extends RecyclerBaseAdapter {
 
             Picasso.get()
                     .load(TextUtils.makePosterPath(movies.get(position).getPosterPath()))
-                    .placeholder(R.drawable.ic_image_black_24dp)
+                    .placeholder(R.drawable.placeholder_portrait)
                     .into(holder.banner);
         }
     }

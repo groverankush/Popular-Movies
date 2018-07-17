@@ -5,11 +5,13 @@
 
     <string name="order_by">Order by</string>
     <string name="val_popularity" translatable="false">Popularity</string>
-    <string name="val_ratings">Ratings</string>
+    <string name="val_ratings" translatable="false">Ratings</string>
+    <string name="val_favourites" translatable="false">Favourites</string>
 
     <string-array name="array_order_by">
         <item>@string/val_popularity</item>
         <item>@string/val_ratings</item>
+        <item>@string/val_favourites</item>
     </string-array>
 
 </resources>
