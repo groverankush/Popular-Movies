@@ -3,9 +3,12 @@ package com.ankushgrover.popularmovies.data.source.repositories;
 import com.ankushgrover.popularmovies.BuildConfig;
 import com.ankushgrover.popularmovies.data.models.review.Review;
 import com.ankushgrover.popularmovies.data.models.review.ReviewResult;
+import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
+import com.ankushgrover.popularmovies.data.models.trailer.TrailerResult;
 import com.ankushgrover.popularmovies.data.source.DataContract;
 import com.ankushgrover.popularmovies.data.source.local.AppDatabase;
 import com.ankushgrover.popularmovies.data.source.remote.MoviesDataSource;
+import com.ankushgrover.popularmovies.utils.NetworkUtils;
 
 import java.util.ArrayList;
 
@@ -31,12 +34,30 @@ public class ReviewsRepository implements DataContract.ReviewsContract {
     @Override
     public Single<ReviewResult> fetchReviews(int movieId) {
 
-        return remoteDataSource.fetchReviews(movieId, BuildConfig.MOVIE_DB_API_KEY);
+        if (NetworkUtils.isConnectedToNetwork())
+            return remoteDataSource.fetchReviews(movieId, BuildConfig.MOVIE_DB_API_KEY);
+        else
+            return database.ReviewDao().getReviews(movieId)
+                    .map(reviews -> {
+                        ReviewResult result = new ReviewResult();
+                        result.setResults(reviews);
+                        return result;
+                    });
+
+
+
 
     }
 
     @Override
     public Completable insertReviews(ArrayList<Review> reviews, int movieId) {
-        return null;
+        return Completable.fromAction(() -> {
+            for (Review review : reviews) {
+                review.setMovieId(movieId);
+            }
+
+
+            database.ReviewDao().insert(reviews);
+        });
     }
 }

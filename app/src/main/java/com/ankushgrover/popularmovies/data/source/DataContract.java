@@ -24,15 +24,13 @@ public interface DataContract {
 
         Single<NetworkResult> fetchTopMovies(int pageNumber);
 
-        Single<TrailerResult> fetchTrailers(String movieId);
-
-        Single<ReviewResult> fetchReviews(String movieId);
-
         Single<NetworkResult> fetchFavouriteMovies();
 
         Completable insertMovie(Movie movie);
 
-        Single<Movie> getMovie(int movieId);
+        Completable deleteMovie(Movie movie);
+
+        Single<Movie> fetchLocalMovie(int movieId);
 
     }
 

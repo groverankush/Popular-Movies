@@ -9,10 +9,12 @@ import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId"), indices = {@Index("movieId")})
+import static android.arch.persistence.room.ForeignKey.*;
+
+@Entity(foreignKeys = @ForeignKey(entity = Movie.class, parentColumns = "id", childColumns = "movieId", onDelete = CASCADE), indices = {@Index("movieId")})
 public class Trailer {
 
-    @PrimaryKey()
+    @PrimaryKey(autoGenerate = true)
     private int _id;
 
     private int movieId;

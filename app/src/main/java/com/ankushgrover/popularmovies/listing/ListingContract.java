@@ -30,6 +30,11 @@ public interface ListingContract {
         void fetchTopMovies();
 
         /**
+         * Method to fetch favourite movies.
+         */
+        void fetchFavourites();
+
+        /**
          * Responsible for fetching movies based on user preference and current requests.
          *
          * @return

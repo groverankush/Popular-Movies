@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 /**
  * Created by Ankush Grover(ankushgrover02@gmail.com) on 13/7/18.
@@ -21,6 +22,6 @@ public interface TrailerDao {
     void insert(ArrayList<Trailer> trailers);
 
     @Query("Select * from Trailer where movieId = :movieId")
-    Flowable<List<Trailer>> getTrailers(int movieId);
+    Single<List<Trailer>> getTrailers(int movieId);
 
 }

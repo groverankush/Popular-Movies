@@ -28,10 +28,7 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
-    public Movie() {
-    }
-
+    private boolean isLiked;
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
@@ -76,6 +73,8 @@ public class Movie implements Parcelable {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+    public Movie() {
+    }
 
     protected Movie(Parcel in) {
         if (in.readByte() == 0) {
@@ -263,5 +262,13 @@ public class Movie implements Parcelable {
         dest.writeByte((byte) (adult == null ? 0 : adult ? 1 : 2));
         dest.writeString(overview);
         dest.writeString(releaseDate);
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

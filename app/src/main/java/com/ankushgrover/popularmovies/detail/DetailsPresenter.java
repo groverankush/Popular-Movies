@@ -2,6 +2,7 @@ package com.ankushgrover.popularmovies.detail;
 
 import android.util.Log;
 
+import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.utils.NetworkUtils;
 
@@ -31,7 +32,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
 
     @Override
     public void loadTrailers() {
-        if (NetworkUtils.isConnectedToNetwork()) {
+
 
             Disposable disposable = dataManager.getTrailersRepository().fetchTrailers(viewModel.getMovie().getId())
                     .subscribeOn(Schedulers.io())
@@ -39,44 +40,88 @@ public class DetailsPresenter implements DetailsContract.Presenter {
                     .subscribe(trailerResult -> {
                         viewModel.setTrailers(trailerResult.getResults());
                         view.onReceiveTrailers();
-                    }, throwable -> view.errorLoadingTrailers());
+                    }, throwable -> {
+                        viewModel.getTrailers().clear();
+                        view.errorLoadingTrailers();
+                    });
             disposables.add(disposable);
-
-        } else {
-            viewModel.getTrailers().clear();
-            view.errorLoadingTrailers();
-        }
 
     }
 
     @Override
     public void loadReviews() {
 
-        if (NetworkUtils.isConnectedToNetwork()) {
+
             Disposable disposable = dataManager.getReviewsRepository().fetchReviews(viewModel.getMovie().getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(reviewResult -> {
                         viewModel.setReviews(reviewResult.getResults());
                         view.onReceiveReviews();
-                    }, throwable -> view.errorLoadingReviews());
+                    }, throwable -> {
+                        viewModel.getReviews().clear();
+                        view.errorLoadingReviews();
+                    });
             disposables.add(disposable);
-        } else {
-            viewModel.getReviews().clear();
-            view.errorLoadingReviews();
-        }
+
+
+
 
 
     }
 
     @Override
-    public void likeMovie() {
+    public void onLikeButtonPress() {
+        if (viewModel.getMovie().isLiked()) {
+            Disposable disposable = dataManager.getMoviesRepository().deleteMovie(viewModel.getMovie())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        viewModel.getMovie().setLiked(false);
+                        view.manageLikeStatus();
+                        view.generalResponse(R.string.removed_from_favourites);
+                    }, throwable -> {
+                        viewModel.getMovie().setLiked(false);
+                        view.manageLikeStatus();
+                        errorLog(throwable, R.string.msg_something_went_wrong, -1);
+                    });
+            disposables.add(disposable);
+        } else {
+            Disposable disposable = dataManager.getMoviesRepository().insertMovie(viewModel.getMovie())
+                    .andThen(dataManager.getTrailersRepository().insertTrailers(viewModel.getTrailers(), viewModel.getMovie().getId()))
+                    .andThen(dataManager.getReviewsRepository().insertReviews(viewModel.getReviews(), viewModel.getMovie().getId()))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        viewModel.getMovie().setLiked(true);
+                        view.manageLikeStatus();
+                        view.generalResponse(R.string.added_to_favourites);
+                    }, throwable -> {
+                        viewModel.getMovie().setLiked(false);
+                        view.manageLikeStatus();
+                        errorLog(throwable, R.string.msg_something_went_wrong, -1);
+                    });
+
+            disposables.add(disposable);
+        }
 
     }
 
     @Override
     public void subscribe() {
         view.setupHead();
+
+        Disposable disposable = dataManager.getMoviesRepository().fetchLocalMovie(viewModel.getMovie().getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movie -> {
+                    viewModel.getMovie().setLiked(true);
+                    view.manageLikeStatus();
+                }, throwable -> {
+                    viewModel.getMovie().setLiked(false);
+                    view.manageLikeStatus();
+                });
+        disposables.add(disposable);
 
         if (viewModel.getTrailers().size() == 0)
             loadTrailers();

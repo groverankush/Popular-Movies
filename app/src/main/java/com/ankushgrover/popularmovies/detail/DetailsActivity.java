@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +21,7 @@ import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.ankushgrover.popularmovies.data.models.review.Review;
 import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
 import com.ankushgrover.popularmovies.data.source.DataManager;
-import com.ankushgrover.popularmovies.data.source.repositories.MoviesRepository;
+import com.ankushgrover.popularmovies.listing.ListingActivity;
 import com.ankushgrover.popularmovies.utils.TextUtils;
 import com.squareup.picasso.Picasso;
 
@@ -47,9 +49,29 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
         presenter = new DetailsPresenter(DataManager.getInstance(), model, this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(movie.getTitle());
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!model.getMovie().isLiked()){
+            Bundle bundle = new Bundle();
+            bundle.putInt(ListingActivity.MOVIE_ID_KEY, model.getMovie().getId());
+            backActivityWithResultOk(bundle);
+        }else super.onBackPressed();
     }
 
     @Override
@@ -82,9 +104,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
         TextUtils.setText(this, R.id.tv_year, TextUtils.isEmpty(movie.getReleaseDate()) ? getString(R.string.release_date_not_available) : movie.getReleaseDate().split("-")[0]);
         TextUtils.setText(this, R.id.tv_ratings, String.format(Locale.ENGLISH, "%.1f", movie.getVoteAverage()));
         TextUtils.setText(this, R.id.tv_description, TextUtils.isEmpty(movie.getOverview()) ? getString(R.string.description_not_available) : movie.getOverview());
-        FloatingActionButton like = findViewById(R.id.btn_like);
-        like.setOnClickListener(v -> {
-        });
+        findViewById(R.id.btn_like).setOnClickListener(v -> presenter.onLikeButtonPress());
     }
 
 
@@ -168,8 +188,14 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
     }
 
     @Override
-    public void generalResponse(int message) {
+    public void manageLikeStatus() {
+        FloatingActionButton fab = findViewById(R.id.btn_like);
+        fab.setImageResource(model.getMovie().isLiked() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+    }
 
+    @Override
+    public void generalResponse(int message) {
+        displayToast(message);
     }
 
     @Override

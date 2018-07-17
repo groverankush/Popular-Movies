@@ -21,6 +21,9 @@ public interface DetailsContract {
 
         void errorLoadingReviews();
 
+        void manageLikeStatus();
+
+
 
     }
 
@@ -39,7 +42,7 @@ public interface DetailsContract {
         /**
          * Method to start db transaction to like
          */
-        void likeMovie();
+        void onLikeButtonPress();
 
     }
 

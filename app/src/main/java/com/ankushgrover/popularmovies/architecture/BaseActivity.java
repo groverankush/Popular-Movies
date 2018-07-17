@@ -62,6 +62,27 @@ abstract public class BaseActivity extends AppCompatActivity {
         startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * Method to back activity with result ok with out data
+     */
+    public void backActivityWithResultOk() {
+        backActivityWithResultOk(null);
+    }
+
+    /**
+     * Method to back activity with result ok with data
+     * @param bundle
+     */
+    public void backActivityWithResultOk(Bundle bundle) {
+        if (bundle != null) {
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            setResult(RESULT_OK, intent);
+        } else
+            setResult(RESULT_OK);
+        finish();
+    }
+
 
     /**
      * Method used to display short duration toast

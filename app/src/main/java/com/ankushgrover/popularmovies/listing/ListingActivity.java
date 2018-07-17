@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.architecture.BaseActivity;
+import com.ankushgrover.popularmovies.data.models.movie.Movie;
 import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.detail.DetailsActivity;
 import com.ankushgrover.popularmovies.settings.Preferences;
@@ -22,7 +23,9 @@ import com.ankushgrover.popularmovies.settings.SettingsActivity;
 
 public class ListingActivity extends BaseActivity implements ListingContract.View {
 
+    public static final String MOVIE_ID_KEY = "movieId";
     private static final int SETTINGS_REQUEST_CODE = 1000;
+    private static final int DETAILS_REQUEST_CODE = 1001;
     private ListingPresenter presenter;
     private ListingViewModel model;
     private ListingAdapter adapter;
@@ -41,6 +44,18 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
                 model.setResult(null);
                 adapter.notifyDataSetChanged();
             }
+
+            if (requestCode == DETAILS_REQUEST_CODE) {
+
+                for (int i = 0; i < model.getMovies().size(); i++) {
+                    Movie movie = model.getMovies().get(i);
+                    if (movie.getId() == data.getIntExtra(MOVIE_ID_KEY, -1)) {
+                        model.getMovies().remove(movie);
+                        adapter.notifyItemRemoved(i);
+                    }
+                }
+            }
+
         }
 
     }
@@ -84,12 +99,7 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
             }
         });
 
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.fetchMovies(true);
-            }
-        });
+        swipe.setOnRefreshListener(() -> presenter.fetchMovies(true));
 
     }
 
@@ -103,7 +113,7 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
         adapter.setOnItemCLickListener(position -> {
             Bundle bundle = new Bundle();
             bundle.putParcelable(DetailsActivity.MOVIE_DETAIL, model.getMovies().get(position));
-            switchActivity(DetailsActivity.class, bundle);
+            switchActivity(DetailsActivity.class, bundle, DETAILS_REQUEST_CODE);
         });
     }
 
@@ -148,12 +158,14 @@ public class ListingActivity extends BaseActivity implements ListingContract.Vie
         recycler.setVisibility(model.getMovies().size() == 0 ? View.INVISIBLE : View.VISIBLE);
         errorTV.setVisibility(model.getMovies().size() == 0 ? View.VISIBLE : View.GONE);
         errorTV.setVisibility(View.VISIBLE);
+        errorTV.setText(errorId);
 
     }
 
 
     @Override
     public boolean fetchMoreMovies() {
+
         return presenter.fetchMovies(false);
     }
 

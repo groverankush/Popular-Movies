@@ -6,6 +6,7 @@ import com.ankushgrover.popularmovies.data.models.trailer.TrailerResult;
 import com.ankushgrover.popularmovies.data.source.DataContract;
 import com.ankushgrover.popularmovies.data.source.local.AppDatabase;
 import com.ankushgrover.popularmovies.data.source.remote.MoviesDataSource;
+import com.ankushgrover.popularmovies.utils.NetworkUtils;
 
 import java.util.ArrayList;
 
@@ -28,11 +29,30 @@ public class TrailersRepository implements DataContract.TrailersContract {
 
     @Override
     public Single<TrailerResult> fetchTrailers(int movieId) {
-        return remoteDataSource.fetchTrailers(movieId, BuildConfig.MOVIE_DB_API_KEY);
+        if (NetworkUtils.isConnectedToNetwork())
+            return remoteDataSource.fetchTrailers(movieId, BuildConfig.MOVIE_DB_API_KEY);
+        else
+            return database.TrailerDao().getTrailers(movieId)
+                    .map(trailers -> {
+                        TrailerResult result = new TrailerResult();
+                        result.setResults(trailers);
+                        return result;
+                    });
+
     }
 
     @Override
     public Completable insertTrailers(ArrayList<Trailer> trailers, int movieId) {
-        return null;
+
+        return Completable.fromAction(() -> {
+            for (Trailer trailer : trailers) {
+                trailer.setMovieId(movieId);
+            }
+
+
+            database.TrailerDao().insert(trailers);
+        });
+
+
     }
 }

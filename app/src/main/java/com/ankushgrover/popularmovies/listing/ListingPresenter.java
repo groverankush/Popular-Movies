@@ -2,7 +2,6 @@ package com.ankushgrover.popularmovies.listing;
 
 import android.util.Log;
 
-import com.ankushgrover.popularmovies.BuildConfig;
 import com.ankushgrover.popularmovies.R;
 import com.ankushgrover.popularmovies.data.source.DataManager;
 import com.ankushgrover.popularmovies.settings.Preferences;
@@ -41,7 +40,7 @@ public class ListingPresenter implements ListingContract.Presenter {
                 .subscribe(networkResult -> {
                             viewModel.setResult(networkResult);
                             viewModel.getMovies().addAll(networkResult.getResults());
-                            view.moviesAdded();
+                            checkMoviesListBeforeDisplay();
                             isLoading(false);
                         },
                         throwable -> {
@@ -62,7 +61,7 @@ public class ListingPresenter implements ListingContract.Presenter {
                             isLoading(false);
                             viewModel.setResult(networkResult);
                             viewModel.getMovies().addAll(networkResult.getResults());
-                            view.moviesAdded();
+                            checkMoviesListBeforeDisplay();
                         },
                         throwable -> {
                             errorLog(throwable, R.string.msg_something_went_wrong, R.string.genereal_error);
@@ -70,6 +69,26 @@ public class ListingPresenter implements ListingContract.Presenter {
                         });
 
 
+        mDisposables.add(disposable);
+    }
+
+    @Override
+    public void fetchFavourites() {
+        if (viewModel.getMovies().size() > 0)
+            return;
+        isLoading(true);
+        Disposable disposable = dataManager.getMoviesRepository().fetchFavouriteMovies()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(networkResult -> {
+                    isLoading(false);
+                    viewModel.setResult(networkResult);
+                    viewModel.getMovies().addAll(networkResult.getResults());
+                    checkMoviesListBeforeDisplay();
+                }, throwable -> {
+                    errorLog(throwable, R.string.msg_something_went_wrong, R.string.genereal_error);
+                    isLoading(false);
+                });
         mDisposables.add(disposable);
     }
 
@@ -84,14 +103,20 @@ public class ListingPresenter implements ListingContract.Presenter {
         }
 
         if (!viewModel.getIsLoading().getValue()) {
-            if (NetworkUtils.isConnectedToNetwork()) {
+            if (Preferences.isFavouritesSelected()) {
+                fetchFavourites();
+                return true;
+            } else if (NetworkUtils.isConnectedToNetwork()) {
                 if (Preferences.isPopularMoviesSelected())
                     fetchPopularMovies();
                 else fetchTopMovies();
                 return true;
             } else {
-                view.generalResponse(R.string.network_error);
-                view.onError(R.string.network_error);
+                if (!Preferences.isFavouritesSelected()) {
+                    view.generalResponse(R.string.network_error);
+                    view.onError(R.string.network_error);
+                }
+
             }
         }
         return false;
@@ -118,6 +143,13 @@ public class ListingPresenter implements ListingContract.Presenter {
     @Override
     public String getTag() {
         return ListingPresenter.class.getSimpleName();
+    }
+
+    private void checkMoviesListBeforeDisplay() {
+        if (viewModel.getMovies().size() == 0)
+            view.onError(R.string.no_movies);
+        else view.moviesAdded();
+
     }
 
     private void isLoading(boolean isLoading) {

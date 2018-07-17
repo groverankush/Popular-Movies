@@ -5,12 +5,11 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.ankushgrover.popularmovies.data.models.review.Review;
-import com.ankushgrover.popularmovies.data.models.trailer.Trailer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 /**
  * Created by Ankush Grover(ankushgrover02@gmail.com) on 13/7/18.
@@ -21,5 +20,5 @@ public interface ReviewDao {
     void insert(ArrayList<Review> reviews);
 
     @Query("Select * from Review where movieId = :movieId")
-    Flowable<List<Review>> getReviews(int movieId);
+    Single<List<Review>> getReviews(int movieId);
 }

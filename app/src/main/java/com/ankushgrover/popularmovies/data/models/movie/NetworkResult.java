@@ -33,6 +33,9 @@ public class NetworkResult implements Parcelable {
     private long totalPages;
     private List<Movie> results;
 
+    public NetworkResult() {
+    }
+
     protected NetworkResult(Parcel in) {
         page = in.readInt();
         totalResults = in.readLong();
